@@ -1,0 +1,16 @@
+allprojects{
+  apply plugin:'groovy'
+}
+
+repositories{
+  jcenter()
+}
+
+ext{
+  groovyVersion='2.4.5'
+}
+
+dependencies{
+  compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+  testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
+}
