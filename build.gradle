@@ -1,16 +1,48 @@
+ext{
+  groovyVersion='2.4.5'
+}
+
 allprojects{
   apply plugin:'groovy'
+
+  repositories{
+    jcenter()
+  }
+
+  dependencies{
+    compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+  }
 }
 
 repositories{
   jcenter()
 }
 
-ext{
-  groovyVersion='2.4.5'
+project(":api"){
+
 }
 
-dependencies{
-  compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
-  testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
+project(":core"){
+
+  sourceSets{
+    integrationTest{
+      groovy{
+        srcDir 'src/test/groovy/com/makingdevs/integration'
+      }
+
+      resources{
+        srcDir 'src/test/resources'
+      }
+    }
+  }
+
+  dependencies{
+    compile project(":api")
+    compile "org.apache.commons:commons-dbcp2:2.0.1"
+    testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
+    integrationTestCompile sourceSets.main.output
+    integrationTestCompile sourceSets.test.output
+    integrationTestCompile configurations.testCompile
+    integrationTestCompile configurations.testRuntime
+  }
 }
