@@ -1,0 +1,21 @@
+databaseChangeLog{
+  changeSet(id:'24022016-1', author:'egjimenezg(generated)'){
+    createTable(tableName:'address'){
+      column(autoIncrement:'true',name:'id',type:'INT'){
+        constraints(nullable:false,primaryKey:true)
+      }
+      column(name:'colony',type:'VARCHAR(255)'){
+        constraints(nullable:false)
+      }
+      column(name:'town',type:'VARCHAR(255)'){
+        constraints(nullable:false)
+      }
+      column(name:'state',type:'VARCHAR(255)'){
+        constraints(nullable:false)
+      }
+      column(name:'city',type:'VARCHAR(255)'){
+        constraints(nullable:false)
+      }
+    }
+  }
+}
