@@ -1,11 +1,24 @@
+buildscript{
+  repositories{
+    maven{
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies{
+    classpath "gradle.plugin.org.liquibase:liquibase-gradle-plugin:1.1.0"
+    classpath "mysql:mysql-connector-java:5.1.36"
+  }
+}
+
 ext{
   groovyVersion='2.4.5'
 }
 
-allprojects{
+subprojects{
   apply plugin:'groovy'
 
   repositories{
+    mavenCentral()
     jcenter()
   }
 
@@ -14,15 +27,13 @@ allprojects{
   }
 }
 
-repositories{
-  jcenter()
-}
 
 project(":api"){
 
 }
 
 project(":core"){
+  apply plugin: "org.liquibase.gradle"  
 
   sourceSets{
     integrationTest{
@@ -39,10 +50,22 @@ project(":core"){
   dependencies{
     compile project(":api")
     compile "org.apache.commons:commons-dbcp2:2.0.1"
+    compile 'mysql:mysql-connector-java:5.1.36'
     testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
     integrationTestCompile sourceSets.main.output
     integrationTestCompile sourceSets.test.output
     integrationTestCompile configurations.testCompile
     integrationTestCompile configurations.testRuntime
+  }
+
+  liquibase{
+    activities{
+      main{
+        changeLogFile "${project.projectDir}/src/main/db/changelog.groovy"
+        url 'jdbc:mysql://localhost:3306/integration_tests'
+        username 'root'
+        password ''
+      }
+    }
   }
 }
